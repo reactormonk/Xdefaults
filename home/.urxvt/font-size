@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+
+sub on_user_command
+{
+  my($self,$cmd) = @_;
+
+  if($cmd eq "font:increase")
+    {
+      font_change_size($self, 1);
+    }
+  elsif($cmd eq "font:decrease")
+    {
+      font_change_size($self, -1);
+    }
+}
+
+sub font_change_size
+{
+  my($term, $change) = @_;
+
+  my($fontstring) =  $term->resource("font");
+  $fontstring     =~ s/(\d*)$/$1 + $change/e;
+
+  $term->cmd_parse("\033]710;$fontstring\007");
+}
